@@ -3,13 +3,44 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title></title>
-	<link rel="stylesheet" href="">
+	<title>XEM Vesting and Earning Calculator</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 	<script src="vestingcalculator.js"></script>
+	<link rel="stylesheet" type="text/css" href="vestingcalculator.css">
 </head>
-<body>
-	<input type="number" name="number" class="vestingNumber">
-	<button type="submit" class="submit">Submit</button>
-</body>
-</html>
+<body class="body">
+	<header class="header">
+		
+	</header>
+	<main class="main container-standard spacer-medium">
+		<div class="calculator calculator-vesting">
+			<h4 class="calculator__title">
+				XEM Vesting Calculator
+			</h4>
+			<label class="number-label">Your XEM's: <input type="number" name="number" class="vestingNumber"></label>
+			<button type="submit" class="btn submit-vesting">Calculate</button>
+			<div class="calculator__output"></div>
+		</div>
+
+		<div class="calculator calculator-earning">
+			<h4 class="calculator__title">
+				XEM Earning Calculator
+			</h4>
+			<label class="number-label">Your Importance score: <input type="number" name="number" class="earningNumber"> * 10 <sup>-4</sup></label>
+			<button type="submit" class="btn submit-earning">Calculate</button>
+			<div class="calculator-earning__output"></div>
+		</div>
+
+	</main>
+	<footer class="footer">
+		<div class="footer__info spacer-small">
+			<div class="footer__info__text container-standard"><p>I know you are probably on the way to buy new Lambo, and I believe it will happen soon ;) but in the meantime, if you founded this usefull, tip some XEM's for beer, so next time in a bar I can drink to your health ;) </p>
+				<p class="xem-address">NAMWRFOMY2W5P6MKLVG3HMOCFDSV3ABRRK5NSNZP</p>
+				<p>Also I am open to any advices about improving current features and writing new ones, so drop me a message on Telegram (@TwoColours) if you think that I can do better</p>
+				<p>"TwoColours"</p>
+			</div>
+		</footer>
+
+	</body>
+	</html>

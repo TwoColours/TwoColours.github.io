@@ -1,0 +1,879 @@
+
+$colorBorder: rgba(0,0,0,0.05);
+$standardBorder: 1px solid rgba(0,0,0,0.05);
+$grey1: #999;
+$red: #ff0000;
+$defaultBlack: #121212;
+$lightBlue: rgb(221,230,239);
+$lightBlue2: rgb(239,247,251);
+$yellow: rgb(233,233,222);
+$pink: rgb(239,232,239);
+
+// Sizing variables
+$gutter: 30px;
+
+// Typography
+$headerFontStack: 'Lato', Helvetica, Arial, sans-serif;
+$bodyFontStack: 'Lato', Helvetica, Arial, sans-serif;
+$baseFontSize: 16px; // Henceforth known as 1em
+
+
+/*============================================================================
+# General
+==============================================================================*/
+
+
+
+
+html {
+  background-color: #fff;
+}
+
+body {
+  background-color: #fff;
+  height: 100%;
+  width: 100%;
+  min-height: 100vh;
+}
+
+
+.main-content {
+  display: block;
+  position: relative;
+  &:after{
+    content: "";
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+}
+
+.main-content.overlay{
+  &:after{
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px; width: 1px;
+  margin: -1px; padding: 0; border: 0;
+}
+
+img{
+  max-width: 100%;
+}
+
+/*============================================================================
+# Mixins
+==============================================================================*/
+
+@mixin appearance() {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+@mixin border-radius($value...) {
+  -moz-border-radius: $value;
+  -webkit-border-radius: $value;
+  border-radius: $value;
+}
+
+@mixin box-shadow($value...) {
+  -moz-box-shadow: $value;
+  -webkit-box-shadow: $value;
+  box-shadow: $value;
+}
+
+@mixin breakpoint($viewport_) {
+  $viewport: $viewport_;
+
+  @media (max-width: $viewport) {
+    @content;
+  }
+}
+
+@mixin minbreakpoint($viewport_) {
+  $viewport: $viewport_;
+
+  @media (min-width: $viewport) {
+    @content;
+  }
+}
+
+@mixin clearfix() {
+  &:after {
+    content: '.';
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+    overflow: hidden;
+  }
+}
+
+@mixin column-count($value...) {
+  -moz-column-count: $value;
+  -webkit-column-count: $value;
+  column-count: $value;
+}
+
+@mixin nobullets() {
+  margin: 0;
+  list-style: none;
+}
+
+@mixin positioned-center() {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  @include transform(translate(-50%, -50%));
+}
+
+@mixin transform($value...) {
+  -moz-transform: ($value);
+  -webkit-transform: ($value);
+  transform: ($value);
+}
+
+@mixin transition($value...) {
+  -moz-transition: $value;
+  -webkit-transition: $value;
+  transition: $value;
+}
+
+/*============================================================================
+# Flexbox Mixins
+==============================================================================*/
+
+@mixin flexbox() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+@mixin flex($values) {
+  -webkit-box-flex: $values;
+  -moz-box-flex: $values;
+  -webkit-flex: $values;
+  -ms-flex: $values;
+  flex: $values;
+}
+
+@mixin flex-direction($direction) {
+  -webkit-flex-direction: $direction;
+  -moz-flex-direction: $direction;
+  -ms-flex-direction: $direction;
+  flex-direction: $direction;
+}
+
+@mixin flex-wrap($wrap) {
+  -webkit-flex-wrap: $wrap;
+  -moz-flex-wrap: $wrap;
+  -ms-flex-wrap: $wrap;
+  flex-wrap: $wrap;
+}
+
+@mixin flex-flow($flow) {
+  -webkit-flex-flow: $flow;
+  -moz-flex-flow: $flow;
+  -ms-flex-flow: $flow;
+  flex-flow: $flow;
+}
+
+@mixin flex-grow($grow) {
+  -webkit-flex-grow: $grow;
+  -moz-flex-grow: $grow;
+  -ms-flex-grow: $grow;
+  flex-grow: $grow;
+}
+
+@mixin flex-shrink($shrink) {
+  -webkit-flex-shrink: $shrink;
+  -moz-flex-shrink: $shrink;
+  -ms-flex-shrink: $shrink;
+  flex-shrink: $shrink;
+}
+
+@mixin flex-basis($width) {
+  -webkit-flex-basis: $width;
+  -moz-flex-basis: $width;
+  -ms-flex-basis: $width;
+  flex-basis: $width;
+}
+
+@mixin align-content($align) {
+  -webkit-align-content: $align;
+  -moz-align-content: $align;
+  -ms-align-content: $align;
+  align-content: $align;
+}
+
+@mixin align-items($align) {
+  -webkit-align-items: $align;
+  -moz-align-items: $align;
+  -ms-align-items: $align;
+  align-items: $align;
+}
+
+@mixin align-self($align) {
+  -webkit-align-self: $align;
+  -moz-align-self: $align;
+  -ms-align-self: $align;
+  align-self: $align;
+}
+
+@mixin justify-content($justify) {
+  -webkit-justify-content: $justify;
+  -moz-justify-content: $justify;
+  -ms-justify-content: $justify;
+  justify-content: $justify;
+  -ms-flex-pack: $justify;
+}
+
+@mixin order($val) {
+  -webkit-box-ordinal-group: $val;
+  -moz-box-ordinal-group: $val;
+  -ms-flex-order: $val;
+  -webkit-order: $val;
+  order: $val;
+}
+
+
+@mixin underline-animate($color, $height, $spacing) {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    width: 0;
+    bottom: $spacing;
+    background: $color;
+    height: $height;
+    @include transition(all 0.3s ease-out);
+  }
+
+  &:hover::after,
+  &:focus::after,
+  &:active::after {
+    left: 0;
+    right: auto;
+    width: 100%;
+  }
+}
+
+.animated-underline{
+  /* I don't know why this is needed, I just added it and it worked in IE Edge. If we remove this width, the gradient breaks in IE Edge */
+  width: calc(100%);
+  background-image: linear-gradient(transparent calc(100% - 2px), black 2px);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition: background-size 0.5s ease-in-out;
+  padding-bottom: 2px;
+}
+
+.animated-underline:hover {
+  background-size: 100% 100%;
+}
+
+
+
+/*============================================================================
+# Typography
+==============================================================================*/
+body,
+input,
+textarea,
+button,
+select {
+  font-size: $baseFontSize;
+  line-height: normal;
+  font-family: $bodyFontStack;
+  color: #121212;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+a {
+  color: #121212;
+}
+h1, h2, h3, h4, h5, h6 {
+  display: block;
+  font-family: $headerFontStack;
+  font-weight: 500;
+  margin: 0 0 0.5em;
+  line-height: normal;
+
+  a {
+    text-decoration: none;
+    font-weight: inherit;
+  }
+}
+
+
+/*================ Use em() Sass function to declare font-size ================*/
+h1 {
+  font-size: 4.3em;
+}
+
+h2 {
+  font-size: 3em;
+}
+
+h3 {
+  font-size: 2.15em;
+}
+
+.h3-h4{
+  font-size: 1.5em;
+}
+
+h4 {
+  font-size: 1.29em;
+}
+
+h5 {
+  font-size: 1em;
+}
+
+h6 {
+  font-size: 0.86em;
+}
+
+
+.h1 { @extend h1; }
+.h2 { @extend h2; }
+.h3 { @extend h3; }
+.h4 { @extend h4; }
+.h5 { @extend h5; }
+.h6 { @extend h6; }
+
+@include breakpoint(1300px) {
+  h1 {
+    font-size: 3.5em;
+  }
+}
+
+@include breakpoint(600px) {
+  h1{
+    font-size: 2.5em;
+  }
+}
+
+p {
+  margin: 0 0 ($gutter / 2) 0;
+  line-height: 1.6;
+
+  img {
+    margin: 0;
+  }
+}
+
+em {
+  font-style: italic;
+}
+
+b, strong {
+  font-weight: bold;
+}
+
+small {
+  font-size: 0.9em;
+}
+
+sup, sub {
+  position: relative;
+  font-size: 60%;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.5em;
+}
+
+
+/*================ Horizontal Rules ================*/
+hr {
+  clear: both;
+  border-top: solid $colorBorder;
+  border-width: 1px 0 0;
+  margin: $gutter 0;
+  height: 0;
+
+  &.hr--small {
+    margin: ($gutter / 2) 0;
+  }
+
+  &.hr--clear {
+    border-top-color: transparent;
+  }
+}
+
+/*============================================================================
+# Rich Text Editor
+==============================================================================*/
+.rte {
+
+  a {
+    text-decoration: underline;
+  }
+
+// Add some top margin to headers from the rich text editor
+h1, h2, h3, h4, h5, h6 {
+  // margin-top: 2em;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+> div {
+  margin-bottom: $gutter / 2;
+}
+
+li {
+  margin-bottom: 0.4em;
+}
+}
+
+/*============================================================================
+# Links and Buttons
+==============================================================================*/
+a,
+.text-link {
+  text-decoration: none;
+  background: transparent;
+}
+
+
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+// OLD BUTTON
+.btn,
+.rte .btn {
+  display: inline-block;
+  padding: 10px 25px;
+  width: auto;
+  margin: 0;
+  line-height: normal;
+  text-decoration: none;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border-radius: 0;
+  font-size: 14px;
+
+  /*================ Set primary button colors - can override later ================*/
+  background-color: #121212;
+  color: #fff;
+  border: 2px solid transparent;
+  transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out, border-color 0.4s ease-in-out;
+
+  &:hover {
+    background-color: #fff;
+    color: #121212;
+    border-color: $defaultBlack;
+  }
+
+  &:active,
+  &:focus {
+    background-color: #121212;
+    color: #fff;
+  }
+
+  &[disabled],
+  &.disabled {
+    // cursor: default;
+    // color: #ddd;
+    // background-color: #ddd;
+    &:hover{
+      background-color: #121212;
+      color: #fff;
+      border-color: transparent;
+    }
+  }
+}
+
+
+.btn--secondary,
+.rte .btn--secondary {
+  @extend .btn;
+  color: $defaultBlack;
+  background-color: $lightBlue;
+  border: none;
+
+  &:hover {
+    background-color: #121212;
+    color: #fff;
+  }
+
+  &:active,
+  &:focus {
+    background-color: #121212;
+    color: #333;
+  }
+}
+
+.btn--small {
+  padding: 4px 5px;
+  font-size: 12px;
+}
+
+.btn--large {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.btn--full {
+  width: 100%;
+}
+
+.link{
+  padding-bottom: 5px;
+  border-bottom: 2px solid $defaultBlack;
+  display: inline-block;
+  text-transform: uppercase;
+  transition: border-color 0.4s ease-in-out;
+  &:hover{
+    border-color: #e9e9df;
+  }
+}
+
+/*============================================================================
+# Lists
+==============================================================================*/
+
+.no-bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*============================================================================
+# Forms
+==============================================================================*/
+form {
+  margin-bottom: 0;
+}
+
+/*================ Prevent zoom on touch devices in active inputs ================*/
+
+input,
+textarea,
+button,
+select {
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+button,
+input,
+textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+button {
+  background: none;
+  border: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+
+/*================ Input element overrides ================*/
+
+input[type="checkbox"] {
+  -webkit-appearance: checkbox;
+  -moz-appearance: checkbox;
+}
+
+input[type="radio"] {
+  -webkit-appearance: radio;
+  -moz-appearance: radio;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-position: right center;
+  background: {
+    image: url('{{ "ico-select.svg" | asset_url }}');
+    repeat: no-repeat;
+    position: right 10px center;
+    color: transparent;
+  }
+  padding-right: 28px;
+  text-indent: 0.01px;
+  text-overflow: '';
+  cursor: pointer;
+
+  /*================ Hide the svg arrow in IE9 and below ================*/
+  .ie9 &,
+  .lt-ie9 & {
+    padding-right: 10px;
+    background-image: none;
+  }
+}
+
+// Force option color (affects IE only)
+option {
+  color: #121212;
+  background-color: #fff;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+label[for] {
+  cursor: pointer;
+}
+
+/*============================================================================
+#Notes and Form Feedback
+==============================================================================*/
+
+.form-success {
+  color: #56ad6a;
+  background-color: #ecfef0;
+  border-color: #56ad6a;
+
+  a {
+    color: #56ad6a;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.form-error,
+.errors {
+  color: #d02e2e;
+  background-color: #fff6f6;
+  border-color: #d02e2e;
+
+  a {
+    color: #d02e2e;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+/*============================================================================
+# Container and spacer
+==============================================================================*/
+// containers and spacers settings ///////////////////////////////////////
+
+$containerLargePadding: 130px;
+$containerStandardPadding: 50px;
+$containerGridItemsPadding: 35px;
+$containerMaxWidth: 1600px;
+
+$spacerSmallPadding: 50px;
+$spacerMediumPadding: 65px;
+$spacerLargePadding: 90px;
+
+
+// Containers ////////////////////////////////////////////////////////////
+.container-large {
+
+  padding-right: $containerLargePadding;
+  padding-left: $containerLargePadding;
+}
+
+.container-large--left{
+  padding-left: $containerLargePadding;
+
+}
+
+.container-large--right{
+  padding-right: $containerLargePadding;
+
+}
+
+
+.container-standard{
+  padding-left: $containerStandardPadding;
+  padding-right: $containerStandardPadding;
+
+}
+
+.container-standard--left{
+  padding-left: $containerStandardPadding;
+
+}
+
+.container-standard--right{
+  padding-right: $containerStandardPadding;
+
+}
+
+// Spacers //////////////////////////////////////////////////////////////
+
+.spacer-large{
+  padding-top: $spacerLargePadding;
+  padding-bottom: $spacerLargePadding;
+}
+
+.spacer-large--top{
+  padding-top: $spacerLargePadding;
+}
+
+.spacer-large--bottom{
+  padding-bottom: $spacerLargePadding;
+}
+
+.spacer-medium{
+  padding-top: $spacerMediumPadding;
+  padding-bottom: $spacerMediumPadding;
+}
+
+.spacer-medium--top {
+  padding-top: $spacerMediumPadding;
+}
+
+.spacer-medium--bottom {
+  padding-bottom: $spacerMediumPadding;
+}
+
+.spacer-small {
+  padding-top: $spacerSmallPadding;
+  padding-bottom: $spacerSmallPadding;
+}
+
+.spacer-small--top{
+  padding-top: $spacerSmallPadding;
+}
+
+.spacer-small--bottom{
+  padding-bottom: $spacerSmallPadding;
+}
+
+
+
+
+/*============================================================================
+#Proper Styling
+==============================================================================*/
+main.main{
+  @include breakpoint(500px) {
+    padding: 25px;
+  }
+}
+body.body{ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  margin: 0;
+
+  .calculator{
+    border: 1px solid rgba(0,0,0,0.05);
+    display: block;
+    width: auto;
+    flex: 0 0 auto;
+    margin: 0 auto;
+    -webkit-box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.05);
+    padding: 50px 30px;
+    @include breakpoint(500px) {
+      padding: 25px;
+    }
+    > *{
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    label.number-label{
+      display: block;
+      input{
+        height: 35px;
+        line-height: 35px;
+        border: 1px solid rgba(0,0,0,0.1);
+        padding: 0 10px;
+      }
+    }
+    .submit{
+      display: inline-block;
+    }
+    .calculator__output{
+      b{
+        text-decoration: underline;
+      }
+    }
+  }
+  .calculator-vesting{
+    margin-bottom: 50px;
+  }
+  .calculator-earning{
+
+  }
+}
+footer.footer{
+  .footer__info{
+    max-width: 100vw;
+    border: 1px solid rgba(0,0,0,0.05);
+    -webkit-box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.2);
+    .footer__info__text{
+      @include breakpoint(500px) {
+        padding-left: 25px;
+        padding-right: 25px;
+      }
+      .xem-address{
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        -ms-word-break: break-all;
+        word-break: break-all;
+        word-break: break-word;
+      }
+    }
+  }
+}
+
+
+
